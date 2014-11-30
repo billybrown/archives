@@ -1,0 +1,67 @@
+body {
+	background: $background;
+	color: $text;
+	font-family: $betterHelvetica;
+	font-weight: 300;
+}
+
+main {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	margin: 0;
+}
+
+a {
+	color: tomato;
+	text-decoration: none;
+
+	&:hover {
+		color: darken(tomato, 10%);
+	}
+}
+
+.pageTitle {
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 10px;
+	font-size: 12px;
+	padding: 100px 0;
+}
+
+%smallText {
+	text-transform: uppercase;
+	font-weight: 900;
+	font-size: 10px;
+	letter-spacing: 2px;
+}
+
+.date {
+	@extend %smallText;
+	color: #ccc;
+}
+
+.tags {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	
+	li {
+		@extend %smallText;
+		color: #ccc;
+
+		display: inline-block;
+
+		&:after {
+			content: ', ';
+		}
+
+		&:last-child {
+			&:after {
+				display: none;
+			}
+		}
+	}
+}

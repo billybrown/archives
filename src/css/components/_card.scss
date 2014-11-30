@@ -1,0 +1,29 @@
+// cards
+
+
+
+.card {
+	box-shadow: 0 0 10px rgba(0,0,0,.1);
+	@extend .clearfix;
+	margin-bottom: 20px;
+
+	.imageGroup {
+		max-width: 200px;
+		float: left;
+		margin-right: 20px
+	}
+
+	img {
+		margin-bottom: -3px;
+	}
+
+	.textGroup {
+		padding: 18px;
+	}
+
+	h2,
+	.summary,
+	.date {
+		margin-bottom: 8px;
+	}
+}
