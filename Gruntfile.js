@@ -23,8 +23,6 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    site: grunt.file.readYAML('.assemblerc.yml'),
-    process: require('./src/sanitize.js'),
 
     // this task makes sure you are running the right version of node
     node_version: {
@@ -41,7 +39,7 @@ module.exports = function(grunt) {
     // this task allows you to publish to github pages
     'gh-pages': {
       options: {
-        base: '<%= site.dest %>/'
+        base: '<%= pkg.dest %>/'
       },
       src: ['**']
     },
@@ -55,7 +53,7 @@ module.exports = function(grunt) {
         },
         dist: {
             files: {
-                '<%= site.dest %>/css/main.css': '<%= site.templates %>/css/main.scss'
+                '<%= pkg.dest %>/css/main.css': '<%= pkg.src %>/css/main.scss'
             }
         }
     },
@@ -73,7 +71,7 @@ module.exports = function(grunt) {
         options: {
           map: true
         },
-        src: '<%= site.dest %>/css/main.css'
+        src: '<%= pkg.dest %>/css/main.css'
       }
     },
 
@@ -82,18 +80,18 @@ module.exports = function(grunt) {
       png: {
         files: [{
           expand: true,
-          cwd: '<%= site.templates %>/img/',
+          cwd: '<%= pkg.src %>/img/',
           src: ['**/*.png', '**/*.jpg', '**/*.gif'],
-          dest: '<%= site.templates %>/img/'
+          dest: '<%= pkg.src %>/img/'
         }]
       },
       svg: {
         files: [{
           expand: true,
-          cwd: '<%= site.templates %>/img/',
+          cwd: '<%= pkg.src %>/img/',
           src: ['**/*.svg'],
           ext: '.svg',
-          dest: '<%= site.templates %>/img/'
+          dest: '<%= pkg.src %>/img/'
         }]
       },      
     },
@@ -102,46 +100,56 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, cwd: '<%= site.templates %>/img/', src: ['**/*'], dest: '<%= site.dest %>/img/'}
+          {expand: true, cwd: '<%= pkg.src %>/img/', src: ['**/*'], dest: '<%= pkg.dest %>/img/'}
         ],
       },
     },
 
     // Build HTML from templates and data
-    assemble: {
-      options: {
-        flatten: true,
-        assets: '<%= site.assets %>',
-        layouts: '<%= site.layouts %>',
-        layout: '<%= site.layout %>'
-      },
-      docs: {
-        files: {'<%= site.dest %>/': ['<%= site.templates %>/pages/index.hbs'] }
+    mustache_render: {
+      all: {
+        files: [{
+          data: "<%= pkg.src %>/templates/site.json",
+          template: "<%= pkg.src %>/templates/default.mustache",
+          dest: "<%= pkg.dest %>/index.html"
+        }]
       }
     },
 
+    // assemble: {
+    //   options: {
+    //     flatten: true,
+    //     assets: '<%= pkg.assets %>',
+    //     layouts: '<%= pkg.layouts %>',
+    //     layout: '<%= pkg.layout %>'
+    //   },
+    //   docs: {
+    //     files: {'<%= pkg.dest %>/': ['<%= pkg.templates %>/pages/index.hbs'] }
+    //   }
+    // },
+
     // Before generating new files remove files from previous build.
     clean: {
-      tmp: ['tmp/**/*', '<%= site.dest %>/**/**'],
-      templates: ['<%= site.dest %>/*.html']
+      tmp: ['tmp/**/*', '<%= pkg.dest %>/**/**'],
+      templates: ['<%= pkg.dest %>/*.html']
     },
 
     // this task 'watches' files and triggers other grunt tasks when those
     // files are saved.
     watch: {
       sass: {
-        files: ['<%= site.templates %>/css/**/**/*.scss'],
+        files: ['<%= pkg.src %>/css/**/**/*.scss'],
         tasks: ['css']
       },
       templates: {
-        files: ['<%= site.templates %>/**/*.hbs'],
+        files: ['<%= pkg.src %>/**/*.hbs'],
         tasks: ['templates']
       },
       // this task must come last, and it will refresh your browser (as long
       // as you have the chrome extension) whenever certain files get changed
       livereload: {
         options: { livereload: true },
-        files: ['<%= site.dest %>/css/main.css', '<%= site.dest %>/*.html'],
+        files: ['<%= pkg.dest %>/css/main.css', '<%= pkg.dest %>/*.html'],
       }
     },
 
@@ -150,7 +158,7 @@ module.exports = function(grunt) {
     size_report: {
         your_target: {
             files: {
-                list: ['<%= site.dest %>/**/**']
+                list: ['<%= pkg.dest %>/**/**']
             },
         },
     },
@@ -160,7 +168,7 @@ module.exports = function(grunt) {
     // @author bill, echo & co.
     takana: {
       options: {
-        path: '<%= site.templates %>/css'
+        path: '<%= pkg.src %>/css'
       }
     },
 
@@ -169,14 +177,14 @@ module.exports = function(grunt) {
   // documentation on how to run different tasks is in the readme
   grunt.registerTask('default', ['node_version']);
   grunt.registerTask('css', ['node_version', 'sass', 'autoprefixer']);
-  grunt.registerTask('templates', ['node_version', 'assemble']);
+  grunt.registerTask('templates', ['node_version', 'mustache_render']);
   grunt.registerTask('images', ['node_version', 'imagemin']);
   grunt.registerTask('fast', ['node_version', 'takana']);
 
   grunt.registerTask('build', [
     'node_version', 
     'clean', 
-    'assemble',
+    'mustache_render',
     'copy',
     'sass', 
     'autoprefixer', 
