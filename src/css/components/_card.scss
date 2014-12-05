@@ -1,16 +1,29 @@
 // cards
 
-
+$card-bp: 500px;
 
 .card {
 	box-shadow: 0 0 10px rgba(0,0,0,.1);
 	@extend .clearfix;
 	margin-bottom: 20px;
 
+	@media (min-width: $card-bp) {
+		display: flex;
+	}
+
 	.imageGroup {
-		max-width: 200px;
-		float: left;
-		margin-right: 20px
+		position: relative;
+		background-size: cover;
+		background-position: center center;
+		width: 100%;
+		height: 150px;
+		display: block;
+
+		@media (min-width: $card-bp) {
+			height: auto;
+			min-width: 200px;
+			width: 200px;
+		}
 	}
 
 	img {
@@ -21,8 +34,12 @@
 		padding: 18px;
 	}
 
+	.summary {
+		margin-bottom: 12px;
+		line-height: 1.35;
+	}
+
 	h2,
-	.summary,
 	.date {
 		margin-bottom: 8px;
 	}

@@ -142,7 +142,7 @@ module.exports = function(grunt) {
         tasks: ['css']
       },
       templates: {
-        files: ['<%= pkg.src %>/**/*.hbs'],
+        files: ['<%= pkg.src %>/templates/**'],
         tasks: ['templates']
       },
       // this task must come last, and it will refresh your browser (as long

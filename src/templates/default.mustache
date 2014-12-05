@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Bill Brown's Archives</title>
+        <title>{{title}}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/main.css">
@@ -12,35 +12,28 @@
     <body>
 
 
-        <h1 class="pageTitle"><a href="">Bill Brown's Archives</a></h1>
+        <h1 class="pageTitle"><a href="">{{title}}</a></h1>
 
         <main>
 
-        <h2>Test: {{greeting}}, {{target}}!</h1>
-
             <ul class="cardList">
-
-            
-                <li class="card">
-                    <div class="imageGroup">
-                        <a href="">
-                            <img src="img/projects/stuffedrobots/robots-angrybot1.jpg" alt="stuffedrobots"/>
-                        </a>
-                    </div>
-                    <div class="textGroup">
-                        <h2><a href="">Stuffed Robots</a></h2>
-                        <p class="date">February 2010</p>
-                        <p class="summary">Stuffed robots are a thing I made with some people.</p>
-                        <ul class="tags">
-                            <li><a href="">Sculpture</a></li>
-                            <li><a href="">Plush</a></li>
-                            <li><a href="">Business</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-
+                {{#work}}
+                    <li class="card">
+                        <a class="imageGroup" href="" style="background-image: url('img/projects/{{shortcode}}/{{frontImage}}');" alt="{{name}}"></a>
+                        <div class="textGroup">
+                            <h2><a href="">{{name}}</a></h2>
+                            <p class="date">{{datestring}}</p>
+                            <p class="summary">{{teaser}}</p>
+                            <ul class="tags">
+                                {{#tags}}
+                                    <li><a href="">{{.}}</a></li>
+                                {{/tags}}
+                            </ul>
+                        </div>
+                    </li>
+                {{/work}}
             </ul>
+
         </main>
 
 

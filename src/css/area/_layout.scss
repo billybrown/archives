@@ -7,7 +7,7 @@ body {
 
 main {
 	max-width: 800px;
-	margin: 0 auto;
+	margin: 0 auto 120px;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -15,11 +15,11 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 a {
-	color: tomato;
+	color: $link-color;
 	text-decoration: none;
 
 	&:hover {
-		color: darken(tomato, 10%);
+		color: $link-hover-color;
 	}
 }
 
@@ -51,17 +51,19 @@ a {
 	li {
 		@extend %smallText;
 		color: #ccc;
-
 		display: inline-block;
+		margin-bottom: 6px;
+	}
 
-		&:after {
-			content: ', ';
-		}
+	a {
+		background: $link-color;
+		color: #FFF;
+		padding: 3px 5px 3px 6px;
+		border-radius: 2px;
 
-		&:last-child {
-			&:after {
-				display: none;
-			}
+		&:hover {
+			background: $link-hover-color;
 		}
 	}
 }
+
